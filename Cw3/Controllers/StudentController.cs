@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Cw3.DAL;
 using Cw3.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cw3.Controllers
@@ -12,17 +9,18 @@ namespace Cw3.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public IActionResult GetStudent(int id)
+
+        private readonly IDbService _dbService;
+
+        public StudentController(IDbService dbService)
         {
-            if (id == 1)
-            {
-                return Ok("Kowalski");
-            } else if (id == 2)
-            {
-                return Ok("Malewski");
-            }
-            return NotFound("Nie znaleziono studenta");
+            _dbService = dbService;
+        }
+
+        [HttpGet]
+        public IActionResult GetStudent()
+        {
+            return Ok(_dbService.GetStudents());
         }
 
         [HttpPost]
